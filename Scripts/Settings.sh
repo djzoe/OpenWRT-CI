@@ -37,6 +37,12 @@ echo "CONFIG_LUCI_LANG_zh_Hans=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-theme-$WRT_THEME=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-app-$WRT_THEME-config=y" >> ./.config
 
+# 彻底禁用系统与内核级 IPv6（新增部分）
+echo "net.ipv6.conf.all.disable_ipv6 = 1" >> ./package/base-files/files/etc/sysctl.conf
+echo "net.ipv6.conf.default.disable_ipv6 = 1" >> ./package/base-files/files/etc/sysctl.conf
+echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> ./package/base-files/files/etc/sysctl.conf
+sed -i '/ula_prefix/d' $CFG_FILE
+
 #引入私有扩展配置
 if [ -f "$GITHUB_WORKSPACE/Config/PRIVATE.txt" ]; then
 	echo "Applying private configurations from PRIVATE.txt..."
